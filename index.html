@@ -68,12 +68,12 @@
 
         @keyframes fall {
             from { 
-                transform: translateY(-10vh) rotate(0deg); 
-                opacity: 1; 
+                transform: translateY(110vh) rotate(0deg); 
+                opacity: 0; 
             }
             to { 
-                transform: translateY(110vh) rotate(360deg); 
-                opacity: 0; 
+                transform: translateY(-10vh) rotate(360deg); 
+                opacity: 1; 
             }
         }
 
@@ -81,8 +81,8 @@
         .container {
             max-width: 600px;
             margin: 0 auto;
-            padding: 20px;
-            padding-bottom: 120px; 
+            padding: 15px;
+            padding-bottom: 100px; 
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -158,41 +158,6 @@
             transform: translateY(-2px);
         }
 
-        /* --- ENHANCED MUSIC UI --- */
-        .music-control {
-            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,240,255,0.95));
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            padding: 15px 30px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 30px;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(160, 32, 240, 0.25);
-            font-size: 1rem;
-        }
-        
-        .music-control:hover { 
-            transform: scale(1.05) translateY(-2px); 
-            background: linear-gradient(135deg, var(--primary), var(--accent)); 
-            color: white;
-            box-shadow: 0 10px 30px rgba(160, 32, 240, 0.4);
-        }
-
-        .music-control.playing {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 6px 20px rgba(160, 32, 240, 0.25); }
-            50% { box-shadow: 0 6px 30px rgba(160, 32, 240, 0.5); }
-        }
 
         /* --- THE HEART (Enhanced) --- */
         .heart-anchor { 
@@ -309,6 +274,69 @@
             font-style: italic;
         }
 
+        /* --- MOBILE OPTIMIZATION --- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+                padding-bottom: 90px;
+            }
+
+            .tab-content {
+                padding: 20px;
+                border-radius: 25px;
+            }
+
+            h1 {
+                font-size: 2rem !important;
+            }
+
+            h2 {
+                font-size: 1.6rem !important;
+            }
+
+            .big-heart {
+                font-size: 80px;
+            }
+
+            .love-msg {
+                font-size: 1.4rem;
+            }
+
+            .note {
+                font-size: 1.2rem;
+                padding: 18px;
+            }
+
+            .nav-bar {
+                bottom: 15px;
+                padding: 10px 15px;
+                gap: 5px;
+            }
+
+            .nav-btn {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+
+            .coupon {
+                padding: 20px;
+            }
+
+            .coupon h3 {
+                font-size: 1.2rem;
+            }
+
+            .bucket-item {
+                font-size: 0.95rem;
+                padding: 15px;
+            }
+
+            .quote {
+                font-size: 1rem;
+                padding: 15px;
+            }
+        }
+
         /* --- EASTER EGG NIGHT SKY --- */
         #night-sky {
             position: fixed;
@@ -369,16 +397,6 @@
         <div id="tab-home" class="tab-content active">
             <h1 style="text-align: center; font-size: 2.5rem; margin-bottom: 10px;">Happy Birthday, My Everything 💜</h1>
             
-            <button class="music-control" id="musicBtn" onclick="toggleMusic()">
-                <span id="musicIcon">▶️</span> 
-                <span id="musicText">Play Our BTS Soundtrack</span>
-            </button>
-
-            <!-- Hidden audio element for music -->
-            <audio id="bgMusic" loop>
-                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-            </audio>
-
             <div class="heart-anchor" onclick="saySomething()">
                 <div class="big-heart">💜</div>
                 <div class="love-msg" id="love-msg">Click my heart...</div>
@@ -440,31 +458,7 @@
     </div>
 
     <script>
-        // --- FIXED MUSIC FUNCTIONALITY ---
-        const bgMusic = document.getElementById('bgMusic');
-        const musicBtn = document.getElementById('musicBtn');
-        const musicIcon = document.getElementById('musicIcon');
-        const musicText = document.getElementById('musicText');
-
-        function toggleMusic() {
-            if (bgMusic.paused) {
-                bgMusic.play().then(() => {
-                    musicIcon.innerText = "⏸️";
-                    musicText.innerText = "I Purple You... 💜";
-                    musicBtn.classList.add('playing');
-                }).catch(err => {
-                    console.log("Audio play failed:", err);
-                    alert("Please click the button again to play music!");
-                });
-            } else {
-                bgMusic.pause();
-                musicIcon.innerText = "▶️";
-                musicText.innerText = "Play Our BTS Soundtrack";
-                musicBtn.classList.remove('playing');
-            }
-        }
-
-        // --- HEART RAIN (Enhanced) ---
+        // --- HEART RAIN (Enhanced - Floating Upward) ---
         function startHeartRain() {
             setInterval(() => {
                 const symbols = ['💜','✨','💕','🌸','💖','⭐'];
@@ -472,11 +466,13 @@
                 heart.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
                 heart.classList.add('heart-petal');
                 heart.style.left = Math.random() * 100 + "vw";
-                heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                heart.style.bottom = "-10vh"; // Start from bottom
+                heart.style.top = "auto";
+                heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
                 heart.style.fontSize = (Math.random() * 10 + 15) + "px";
                 document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 6000);
-            }, 300);
+                setTimeout(() => heart.remove(), 7000);
+            }, 400);
         }
 
         // --- INTERACTIVE HEART MESSAGES ---
@@ -562,12 +558,6 @@
                 }
             }
         });
-
-        // Auto-play music on first interaction (some browsers require this)
-        document.addEventListener('click', function initAudio() {
-            bgMusic.load();
-            document.removeEventListener('click', initAudio);
-        }, { once: true });
     </script>
 </body>
 </html>
